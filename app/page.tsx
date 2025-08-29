@@ -7,8 +7,13 @@ import { Card, CardContent } from "./components/ui/card";
 import { Badge } from "./components/ui/badge";
 import { Avatar, AvatarImage } from "./components/ui/avatar";
 import { searchOptions } from "./_constants/search";
+import { db } from "./_lib/prisma";
+import BarberShopItem from "./components/barbershop-item";
 
-export default function Home() {
+export default async function Home() {
+  //TODO: FAZER O COMPONENTE DAS BARBEARIAS RECOMENDADAS
+  const barbershops = await db.barbershop.findMany({});
+  console.log({ barbershops });
   return (
     <>
       <Header />
@@ -51,7 +56,7 @@ export default function Home() {
             src="/banner.svg"
             alt="Agende nos Melhores com FSW Barber"
             fill
-            className="rounded-2xl object-cover"
+            className="rounded-2xl object-contain"
           />
         </div>
 
@@ -83,6 +88,16 @@ export default function Home() {
               </div>
             </CardContent>
           </Card>
+        </div>
+
+        {/*RECOMENDADOS*/}
+        <h3 className="mt-6 text-xs font-bold text-gray-400 uppercase">
+          Recomendados
+        </h3>
+        <div className="mt-4 flex gap-4 overflow-x-scroll [&::-webkit-scrollbar]:hidden">
+          {barbershops.map((barbershop) => (
+            <BarberShopItem key={barbershop.id} barbershop={barbershop} />
+          ))}
         </div>
       </div>
     </>
