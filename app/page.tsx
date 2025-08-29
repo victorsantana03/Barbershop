@@ -4,15 +4,19 @@ import { Button } from "./components/ui/button";
 import { Input } from "./components/ui/input";
 import Image from "next/image";
 import { Card, CardContent } from "./components/ui/card";
-import { Badge } from "./components/ui/badge";
-import { Avatar, AvatarImage } from "./components/ui/avatar";
 import { searchOptions } from "./_constants/search";
 import { db } from "./_lib/prisma";
 import BarberShopItem from "./components/barbershop-item";
+import BookingItem from "./components/booking-item";
 
 export default async function Home() {
   //TODO: FAZER O COMPONENTE DAS BARBEARIAS RECOMENDADAS
   const barbershops = await db.barbershop.findMany({});
+  const popularBarbershops = await db.barbershop.findMany({
+    orderBy: {
+      name: "desc",
+    },
+  });
   console.log({ barbershops });
   return (
     <>
@@ -61,34 +65,7 @@ export default async function Home() {
         </div>
 
         {/*AGENDAMENTOS*/}
-        <div>
-          <h3 className="py-4 text-xs font-bold text-gray-400 uppercase">
-            Agendamentos
-          </h3>
-
-          <Card className="p-0">
-            <CardContent className="flex justify-between p-0">
-              {/*ESQUERDA */}
-              <div className="flex flex-col gap-2 py-5 pl-5">
-                <Badge>Confirmado</Badge>
-                <h3 className="font-semibold">Corte de cabelo</h3>
-
-                <div className="flex items-center gap-2">
-                  <Avatar>
-                    <AvatarImage src="https://utfs.io/f/c97a2dc9-cf62-468b-a851-bfd2bdde775f-16p.png" />
-                  </Avatar>
-                  <p>Vintage Barber</p>
-                </div>
-              </div>
-              {/*DIREITA*/}
-              <div className="flex flex-col items-center justify-center border-l-2 border-solid px-5">
-                <p className="text-sm">Fevereiro</p>
-                <p className="text-2xl">06</p>
-                <p className="text-sm">09:45</p>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+        <BookingItem />
 
         {/*RECOMENDADOS*/}
         <h3 className="mt-6 text-xs font-bold text-gray-400 uppercase">
@@ -99,7 +76,27 @@ export default async function Home() {
             <BarberShopItem key={barbershop.id} barbershop={barbershop} />
           ))}
         </div>
+
+        {/*POPULARES*/}
+        <h3 className="mt-6 text-xs font-bold text-gray-400 uppercase">
+          Populares
+        </h3>
+        <div className="mt-4 flex gap-4 overflow-x-scroll [&::-webkit-scrollbar]:hidden">
+          {popularBarbershops.map((barbershop) => (
+            <BarberShopItem key={barbershop.id} barbershop={barbershop} />
+          ))}
+        </div>
       </div>
+
+      <footer>
+        <Card className="mt-6 rounded-none">
+          <CardContent>
+            <p className="text-sm text-gray-400">
+              © 2023 Copyright FSW Barber
+            </p>
+          </CardContent>
+        </Card>
+      </footer>
     </>
   );
 }
