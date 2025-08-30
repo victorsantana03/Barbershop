@@ -4,6 +4,7 @@ import { Card, CardContent } from "./ui/card";
 import { Button } from "./ui/button";
 import Image from "next/image";
 import { Barbershop } from "@prisma/client";
+import Link from "next/link";
 
 interface BarberShopItemProps {
   barbershop: Barbershop;
@@ -34,7 +35,9 @@ const BarberShopItem = ({ barbershop }: BarberShopItemProps) => {
         <div className="flex flex-col gap-2 p-2">
           <h3 className="truncate font-bold">{barbershop.name}</h3>
           <p className="truncate text-sm text-gray-400">{barbershop.address}</p>
-          <Button variant={"secondary"}>Reservar</Button>
+          <Button variant={"secondary"} asChild>
+            <Link href={`/barbershops/${barbershop.id}`}>Reservar</Link>
+          </Button>
         </div>
       </CardContent>
     </Card>

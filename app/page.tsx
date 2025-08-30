@@ -17,7 +17,7 @@ export default async function Home() {
       name: "desc",
     },
   });
-  console.log({ barbershops });
+
   return (
     <>
       <Header />
