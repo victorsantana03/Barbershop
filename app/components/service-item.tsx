@@ -23,7 +23,7 @@ const ServiceItem = ({ service }: ServiceItemProps) => {
           </div>
 
           {/*TEXTO*/}
-          <div className="flex h-[110px] flex-col justify-between">
+          <div className="flex h-[110px] w-full flex-col justify-between">
             <h3 className="font-semibold">{service.name}</h3>
             <p className="text-sm text-gray-400">{service.description}</p>
             <div className="flex items-center justify-between">
