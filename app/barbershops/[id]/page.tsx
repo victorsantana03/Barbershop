@@ -1,4 +1,5 @@
 import { db } from "@/app/_lib/prisma";
+import Footer from "@/app/components/footer";
 import PhoneItem from "@/app/components/phone-item";
 import ServiceItem from "@/app/components/service-item";
 import { Button } from "@/app/components/ui/button";
@@ -73,7 +74,7 @@ const BarberShopPage = async ({ params }: BarberShopPageProps) => {
         ))}
       </div>
       {/*CONTATO*/}
-      <div className="p-5 pb-10">
+      <div className="p-5">
         <h3 className="text-xs font-bold text-gray-400 uppercase">Contato</h3>
         <div className="grid grid-cols-1 gap-2">
           {barbeshop.phones.map((phone, i) => (
@@ -81,6 +82,7 @@ const BarberShopPage = async ({ params }: BarberShopPageProps) => {
           ))}
         </div>
       </div>
+      <Footer />
     </div>
   );
 };

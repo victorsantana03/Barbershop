@@ -3,11 +3,11 @@ import Header from "./components/header";
 import { Button } from "./components/ui/button";
 import { Input } from "./components/ui/input";
 import Image from "next/image";
-import { Card, CardContent } from "./components/ui/card";
 import { searchOptions } from "./_constants/search";
 import { db } from "./_lib/prisma";
 import BarberShopItem from "./components/barbershop-item";
 import BookingItem from "./components/booking-item";
+import Footer from "./components/footer";
 
 export default async function Home() {
   //TODO: FAZER O COMPONENTE DAS BARBEARIAS RECOMENDADAS
@@ -88,15 +88,7 @@ export default async function Home() {
         </div>
       </div>
 
-      <footer>
-        <Card className="mt-6 rounded-none">
-          <CardContent>
-            <p className="text-sm text-gray-400">
-              © 2023 Copyright FSW Barber
-            </p>
-          </CardContent>
-        </Card>
-      </footer>
+      <Footer />
     </>
   );
 }
