@@ -1,13 +1,13 @@
-import { SearchIcon } from "lucide-react";
 import Header from "./components/header";
 import { Button } from "./components/ui/button";
-import { Input } from "./components/ui/input";
+
 import Image from "next/image";
 import { searchOptions } from "./_constants/search";
 import { db } from "./_lib/prisma";
 import BarberShopItem from "./components/barbershop-item";
 import BookingItem from "./components/booking-item";
 import Footer from "./components/footer";
+import Search from "./components/search";
 
 export default async function Home() {
   //TODO: FAZER O COMPONENTE DAS BARBEARIAS RECOMENDADAS
@@ -30,11 +30,8 @@ export default async function Home() {
         </div>
 
         {/*INPUT*/}
-        <div className="mt-6 flex items-center gap-2">
-          <Input placeholder="Faça sua busca" />
-          <Button>
-            <SearchIcon />
-          </Button>
+        <div className="mt-6">
+          <Search />
         </div>
 
         {/*BUSCA RÁPIDA*/}
