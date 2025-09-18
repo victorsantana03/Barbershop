@@ -21,7 +21,7 @@ const BarberShopPage = async ({ searchParams }: BarberShopPageProps) => {
       barbershop: true,
     },
   });
-  console.log(barbershopServices);
+
   return (
     <>
       <Header />

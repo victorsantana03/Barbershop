@@ -1,13 +1,32 @@
 import Image from "next/image";
 import { Card, CardContent } from "./ui/card";
-import { BarbershopService } from "@prisma/client";
+
 import { Button } from "./ui/button";
 
+import { Sheet, SheetTrigger } from "./ui/sheet";
+
+import SheetContentBooking from "./sheet-content-booking";
+import { db } from "../_lib/prisma";
+
 interface ServiceItemProps {
-  service: BarbershopService;
+  service: {
+    id: string;
+    name: string;
+    description: string;
+    imageUrl: string;
+    price: number; // aqui já não é Decimal
+    barberShopId: string;
+  };
 }
 
-const ServiceItem = ({ service }: ServiceItemProps) => {
+const ServiceItem = async ({ service }: ServiceItemProps) => {
+  const barbershop = await db.barbershop.findUnique({
+    where: {
+      id: service.barberShopId,
+    },
+  });
+
+  if (!barbershop) return;
   return (
     <div>
       <Card className="p-0">
@@ -33,7 +52,16 @@ const ServiceItem = ({ service }: ServiceItemProps) => {
                   currency: "BRL",
                 }).format(Number(service.price))}
               </p>
-              <Button variant={"secondary"}>Reservar</Button>
+
+              <Sheet>
+                <SheetTrigger asChild>
+                  <Button variant={"secondary"}>Reservar</Button>
+                </SheetTrigger>
+                <SheetContentBooking
+                  service={service}
+                  barbershop={barbershop}
+                />
+              </Sheet>
             </div>
           </div>
         </CardContent>

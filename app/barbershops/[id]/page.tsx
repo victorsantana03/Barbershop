@@ -1,5 +1,5 @@
 import { db } from "@/app/_lib/prisma";
-import Footer from "@/app/components/footer";
+
 import PhoneItem from "@/app/components/phone-item";
 import ServiceItem from "@/app/components/service-item";
 import SidebarButton from "@/app/components/sidebar-button";
@@ -28,6 +28,15 @@ const BarberShopPage = async ({ params }: BarberShopPageProps) => {
   if (!barbeshop) {
     return notFound();
   }
+
+  //Transformando price em Number pois Decimal no client component deu erro
+  const serializedBarbershop = {
+    ...barbeshop,
+    services: barbeshop.services.map((service) => ({
+      ...service,
+      price: Number(service.price),
+    })),
+  };
 
   return (
     <div>
@@ -71,7 +80,7 @@ const BarberShopPage = async ({ params }: BarberShopPageProps) => {
       {/*SERVIÇOS*/}
       <div className="grid grid-cols-1 gap-4 border-b border-solid p-5">
         <h3 className="text-xs font-bold text-gray-400 uppercase">Serviços</h3>
-        {barbeshop.services.map((service) => (
+        {serializedBarbershop.services.map((service) => (
           <ServiceItem key={service.id} service={service} />
         ))}
       </div>
@@ -84,7 +93,6 @@ const BarberShopPage = async ({ params }: BarberShopPageProps) => {
           ))}
         </div>
       </div>
-      <Footer />
     </div>
   );
 };

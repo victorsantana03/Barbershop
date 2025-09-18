@@ -17,7 +17,6 @@ import Image from "next/image";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -120,20 +119,25 @@ const SidebarButton = () => {
           {/*SERVIÇOS*/}
           <div className="flex flex-col gap-4 py-5">
             {searchOptions.map((option) => (
-              <Button
-                key={option.title}
-                variant={"ghost"}
-                className="justify-start space-x-1"
-              >
-                <Image
-                  src={option.imageUrl}
-                  alt={option.title}
-                  width={16}
-                  height={16}
-                />
+              <SheetClose key={option.title} asChild>
+                <Button
+                  key={option.title}
+                  variant={"ghost"}
+                  className="justify-start space-x-1"
+                  asChild
+                >
+                  <Link href={`/barbershops?search=${option.title}`}>
+                    <Image
+                      src={option.imageUrl}
+                      alt={option.title}
+                      width={16}
+                      height={16}
+                    />
 
-                <p>{option.title}</p>
-              </Button>
+                    <p>{option.title}</p>
+                  </Link>
+                </Button>
+              </SheetClose>
             ))}
           </div>
 

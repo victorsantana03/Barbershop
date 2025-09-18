@@ -6,8 +6,9 @@ import { searchOptions } from "./_constants/search";
 import { db } from "./_lib/prisma";
 import BarberShopItem from "./components/barbershop-item";
 import BookingItem from "./components/booking-item";
-import Footer from "./components/footer";
+
 import Search from "./components/search";
+import Link from "next/link";
 
 export default async function Home() {
   //TODO: FAZER O COMPONENTE DAS BARBEARIAS RECOMENDADAS
@@ -37,16 +38,17 @@ export default async function Home() {
         {/*BUSCA RÁPIDA*/}
         <div className="mt-6 flex gap-4 overflow-x-scroll [&::-webkit-scrollbar]:hidden">
           {searchOptions.map((option) => (
-            <Button key={option.title} variant={"secondary"}>
-              <div className="flex gap-2">
+            <Button key={option.title} variant={"secondary"} asChild>
+              <Link href={`/barbershops?search=${option.title}`}>
                 <Image
                   src={option.imageUrl}
                   alt={option.title}
                   width={16}
                   height={16}
                 />
+
                 <p>{option.title}</p>
-              </div>
+              </Link>
             </Button>
           ))}
         </div>
@@ -84,8 +86,6 @@ export default async function Home() {
           ))}
         </div>
       </div>
-
-      <Footer />
     </>
   );
 }
