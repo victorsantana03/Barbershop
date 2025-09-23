@@ -14,6 +14,8 @@ import { getBookings } from "../_actions/get-bookings";
 import Image from "next/image";
 import { Card, CardContent } from "./ui/card";
 import { Sheet } from "./ui/sheet";
+import { Dialog } from "./ui/dialog";
+import SignInDialog from "./sign-in-dialog";
 
 interface ServiceItemProps {
   service: {
@@ -80,6 +82,7 @@ const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
   );
   const [dayBookings, setDayBookings] = useState<Booking[]>();
   const [bookingSheetIsOpen, setBookingSheetIsOpen] = useState<boolean>(false);
+  const [signInDialogIsOpen, setSignInDialogIsOpen] = useState<boolean>(false);
 
   useEffect(() => {
     const fetch = async () => {
@@ -98,6 +101,14 @@ const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
     setTimeSelected(undefined);
     setDayBookings([]);
     setBookingSheetIsOpen(false);
+  };
+
+  const handleReserveBooking = () => {
+    if (!data?.user) {
+      setSignInDialogIsOpen(true);
+      return;
+    }
+    setBookingSheetIsOpen(true);
   };
 
   const handleSelectedDay = (date: Date | undefined) => {
@@ -163,10 +174,7 @@ const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
                 open={bookingSheetIsOpen}
                 onOpenChange={handleBookingSheetOpenChange}
               >
-                <Button
-                  variant={"secondary"}
-                  onClick={() => setBookingSheetIsOpen(true)}
-                >
+                <Button variant={"secondary"} onClick={handleReserveBooking}>
                   Reservar
                 </Button>
 
@@ -261,6 +269,13 @@ const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
           </div>
         </CardContent>
       </Card>
+
+      <Dialog
+        open={signInDialogIsOpen}
+        onOpenChange={() => setSignInDialogIsOpen(false)}
+      >
+        <SignInDialog />
+      </Dialog>
     </div>
   );
 };
