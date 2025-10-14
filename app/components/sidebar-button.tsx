@@ -79,10 +79,18 @@ const SidebarButton = () => {
               </Button>
             </SheetClose>
 
-            <Button className="w-full justify-start py-6" variant="ghost">
-              <Calendar />
-              <p>Agendamentos</p>
-            </Button>
+            <SheetClose asChild>
+              <Button
+                className="w-full justify-start py-6"
+                variant="ghost"
+                asChild
+              >
+                <Link href="/bookings">
+                  <Calendar />
+                  <p>Agendamentos</p>
+                </Link>
+              </Button>
+            </SheetClose>
           </div>
 
           {/*SERVIÇOS*/}

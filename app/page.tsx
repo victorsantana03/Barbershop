@@ -9,15 +9,27 @@ import BookingItem from "./components/booking-item";
 
 import Search from "./components/search";
 import Link from "next/link";
+import { getServerSession } from "next-auth";
+import { authOptions } from "./_lib/auth";
 
 export default async function Home() {
-  //TODO: FAZER O COMPONENTE DAS BARBEARIAS RECOMENDADAS
+  const session = await getServerSession(authOptions);
   const barbershops = await db.barbershop.findMany({});
   const popularBarbershops = await db.barbershop.findMany({
     orderBy: {
       name: "desc",
     },
   });
+  const confirmedBookings = session?.user
+    ? await db.booking.findMany({
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        where: { userId: (session.user as any).id, date: { gte: new Date() } },
+        include: { service: { include: { barbershop: true } } },
+        orderBy: {
+          date: "asc",
+        },
+      })
+    : [];
 
   return (
     <>
@@ -64,7 +76,14 @@ export default async function Home() {
         </div>
 
         {/*AGENDAMENTOS*/}
-        <BookingItem />
+        <h3 className="py-4 text-xs font-bold text-gray-400 uppercase">
+          Meus Agendamentos
+        </h3>
+        <div className="flex gap-4 overflow-x-scroll [&::-webkit-scrollbar]:hidden">
+          {confirmedBookings.map((booking) => (
+            <BookingItem key={booking.id} booking={booking} />
+          ))}
+        </div>
 
         {/*RECOMENDADOS*/}
         <h3 className="mt-6 text-xs font-bold text-gray-400 uppercase">
