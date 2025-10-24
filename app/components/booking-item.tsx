@@ -35,9 +35,12 @@ interface BookingItemProps {
   booking: Prisma.BookingGetPayload<{
     include: { service: { include: { barbershop: true } } };
   }>;
+  confirmedBookings?: Prisma.BookingGetPayload<{
+    include: { service: { include: { barbershop: true } } };
+  }>[];
 }
 //TODO: Receber agendamento como prop
-const BookingItem = ({ booking }: BookingItemProps) => {
+const BookingItem = ({ booking, confirmedBookings }: BookingItemProps) => {
   const isConfirmed = isFuture(booking.date);
   const handleCancelBooking = async () => {
     try {
@@ -51,7 +54,9 @@ const BookingItem = ({ booking }: BookingItemProps) => {
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Card className="min-w-[90%] p-0">
+        <Card
+          className={`${(confirmedBookings?.length ?? 0) > 1 ? "min-w-[90%]" : "min-w-[100%]"} p-0`}
+        >
           <CardContent className="flex cursor-pointer justify-between p-0">
             {/*ESQUERDA */}
             <div className="flex flex-col items-start gap-2 py-5 pl-5">

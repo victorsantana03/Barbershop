@@ -11,6 +11,9 @@ import Search from "./components/search";
 import Link from "next/link";
 import { getServerSession } from "next-auth";
 import { authOptions } from "./_lib/auth";
+import { format } from "date-fns";
+import { ptBR } from "date-fns/locale";
+import { Card, CardContent } from "./components/ui/card";
 
 export default async function Home() {
   const session = await getServerSession(authOptions);
@@ -38,8 +41,18 @@ export default async function Home() {
       <div className="p-5">
         {/*TEXTO OLÁ*/}
         <div>
-          <h2 className="text-xl">Olá Miguel!</h2>
-          <p className="text-gray-400">Sexta, 2 de Fevereiro</p>
+          <h2 className="text-xl">
+            Olá, {session?.user ? session.user.name : "bem vindo"}!
+          </h2>
+          <p className="text-gray-400">
+            <span className="capitalize">
+              {format(new Date(), "EEEE", { locale: ptBR })},
+            </span>
+            <span> {format(new Date(), "dd 'de'", { locale: ptBR })} </span>
+            <span className="capitalize">
+              {format(new Date(), "MMMM", { locale: ptBR })}
+            </span>
+          </p>
         </div>
 
         {/*INPUT*/}
@@ -79,11 +92,25 @@ export default async function Home() {
         <h3 className="py-4 text-xs font-bold text-gray-400 uppercase">
           Meus Agendamentos
         </h3>
-        <div className="flex gap-4 overflow-x-scroll [&::-webkit-scrollbar]:hidden">
-          {confirmedBookings.map((booking) => (
-            <BookingItem key={booking.id} booking={booking} />
-          ))}
-        </div>
+        {confirmedBookings.length > 0 ? (
+          <div className="flex gap-4 overflow-x-scroll [&::-webkit-scrollbar]:hidden">
+            {confirmedBookings.map((booking) => (
+              <BookingItem
+                key={booking.id}
+                booking={booking}
+                confirmedBookings={confirmedBookings}
+              />
+            ))}
+          </div>
+        ) : (
+          <Card>
+            <CardContent>
+              <p className="text-center text-sm font-semibold">
+                Nenhum agendamento marcado por enquanto...
+              </p>
+            </CardContent>
+          </Card>
+        )}
 
         {/*RECOMENDADOS*/}
         <h3 className="mt-6 text-xs font-bold text-gray-400 uppercase">
