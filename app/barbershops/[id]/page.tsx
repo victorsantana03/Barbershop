@@ -81,7 +81,11 @@ const BarberShopPage = async ({ params }: BarberShopPageProps) => {
       <div className="grid grid-cols-1 gap-4 border-b border-solid p-5">
         <h3 className="text-xs font-bold text-gray-400 uppercase">Serviços</h3>
         {serializedBarbershop.services.map((service) => (
-          <ServiceItem key={service.id} service={service} />
+          <ServiceItem
+            key={service.id}
+            service={service}
+            barbershop={barbeshop}
+          />
         ))}
       </div>
       {/*CONTATO*/}
